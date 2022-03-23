@@ -68,7 +68,7 @@ public class TicTacToe {
         }
     }
     //TODO Написать чекер для проверки победил ли игрок/проиграл и закончилась ли игра
-    //TODO Доработать логику
+   
 
     public static void makeMove(Character player) {
         setGameField();
