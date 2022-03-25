@@ -1,22 +1,11 @@
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-public class TicTacToe {
+public class TicTacToe implements WinCombinations {
     public static Map<Integer, Character> field = new HashMap<>();
     public static Character player;
     public static Character player2;
-//    public static int[][] combinations = {
-//            {0,1,2},
-//            {2,5,8},
-//            {2,4,6},
-//            {6,7,8},
-//            {0,3,6},
-//            {0,4,8},
-//            {1,4,7},
-//            {3,4,5}
-//    };
+    public static List<Integer> playerPosition = new ArrayList<>();
+    public static List<Integer> secondPlayerPosition = new ArrayList<>();
 
     public static void setGameField() {
         for (int i = 0; i < 9; i++) {
@@ -68,36 +57,57 @@ public class TicTacToe {
         }
     }
     //TODO Написать чекер для проверки победил ли игрок/проиграл и закончилась ли игра
-   
 
-    public static void makeMove(Character player) {
-        setGameField();
-        while (true) {
 
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("select a number from 1 to 8");
-            int playerMove = scanner.nextInt();
+    public static void makePlayerMove(Character player) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("select a number from 1 to 8");
+        Integer playerMove = scanner.nextInt();
+        if (player.equals('X')) {
             field.put(playerMove, player);
-            getGameField();
+            playerPosition.add(playerMove);
         }
-
+        if (player.equals('O')) {
+            field.put(playerMove, player);
+            secondPlayerPosition.add(playerMove);
+        }
     }
 
+    public static void checkWin(List<Integer> playerPosition) {
+        
+        winCombinations.add(topRow);
+        winCombinations.add(midRow);
+        winCombinations.add(botRow);
+        winCombinations.add(leftCol);
+        winCombinations.add(midCol);
+        winCombinations.add(rightCol);
+        winCombinations.add(cross1);
+        winCombinations.add(cross2);
 
+
+        for (List<Integer> combination : winCombinations) {
+            if (playerPosition.containsAll(combination)) {
+                System.out.println("win");
+            }
+        }
+    }
+
+    //TODO Нужно сделать так чтобы ходы игроков чередовались друг за другом
+    //TODO Работаем над предфинальной стадии разработки (собираем всё воедино)
+    //TODO В финальной стадии нужно будет исправить все баги, улучшить читабельность кода+упростить его, сделать тесты
     public static void startGame() {
         choosePlayer();
         setGameField();
-        getGameField();
+        while (true) {
+            getGameField();
+            makePlayerMove(player);
+            checkWin(playerPosition);
+        }
     }
 
-    public void stopGame() {
-
-    }
-
-    //TODO startGame()
     public static void main(String[] args) {
-        TicTacToe test = new TicTacToe();
 
-        makeMove('X');
+        startGame();
     }
 }
