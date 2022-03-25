@@ -7,6 +7,17 @@ public class TicTacToe implements WinCombinations {
     public static List<Integer> playerPosition = new ArrayList<>();
     public static List<Integer> secondPlayerPosition = new ArrayList<>();
 
+    public static void setWinCombinations() {
+        winCombinations.add(topRow);
+        winCombinations.add(midRow);
+        winCombinations.add(botRow);
+        winCombinations.add(leftCol);
+        winCombinations.add(midCol);
+        winCombinations.add(rightCol);
+        winCombinations.add(cross1);
+        winCombinations.add(cross2);
+    }
+
     public static void setGameField() {
         for (int i = 0; i < 9; i++) {
             field.put(i, '_');
@@ -17,13 +28,14 @@ public class TicTacToe implements WinCombinations {
         for (int i = 0; i < field.size(); i++) {
             if (i % 3 == 0) System.out.println(" ");
             System.out.print(field.get(i));
+
         }
     }
 
     public static void printPlayerChooseMessage() {
         System.out.println("What do you choose?:");
         System.out.println("1 - X");
-        System.out.println("2 - O");
+        System.out.println("2 - 0");
 
     }
 
@@ -46,12 +58,12 @@ public class TicTacToe implements WinCombinations {
         if (playerChoose == 1) {
             System.out.println("You will play X");
             player = 'X';
-            player2 = 'O';
+            player2 = '0';
 
         }
         if (playerChoose == 2) {
-            System.out.println("You will play O");
-            player = 'O';
+            System.out.println("You will play 0");
+            player = '0';
             player2 = 'X';
 
         }
@@ -62,35 +74,28 @@ public class TicTacToe implements WinCombinations {
     public static void makePlayerMove(Character player) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("select a number from 1 to 8");
+        System.out.println("select a number from 0 to 8");
         Integer playerMove = scanner.nextInt();
         if (player.equals('X')) {
             field.put(playerMove, player);
             playerPosition.add(playerMove);
         }
-        if (player.equals('O')) {
+        if (player.equals('0')) {
             field.put(playerMove, player);
             secondPlayerPosition.add(playerMove);
         }
     }
 
-    public static void checkWin(List<Integer> playerPosition) {
-        
-        winCombinations.add(topRow);
-        winCombinations.add(midRow);
-        winCombinations.add(botRow);
-        winCombinations.add(leftCol);
-        winCombinations.add(midCol);
-        winCombinations.add(rightCol);
-        winCombinations.add(cross1);
-        winCombinations.add(cross2);
+    public static String checkWin(List<Integer> playerPosition) {
 
+        setWinCombinations();
 
         for (List<Integer> combination : winCombinations) {
             if (playerPosition.containsAll(combination)) {
-                System.out.println("win");
+                return "win";
             }
         }
+        return "";
     }
 
     //TODO Нужно сделать так чтобы ходы игроков чередовались друг за другом
@@ -101,8 +106,14 @@ public class TicTacToe implements WinCombinations {
         setGameField();
         while (true) {
             getGameField();
-            makePlayerMove(player);
-            checkWin(playerPosition);
+            makePlayerMove(player); //TODO Исправить player
+
+            if (checkWin(playerPosition).equals("win")) {
+                getGameField();
+                System.out.println("You win");
+
+                break;
+            }
         }
     }
 
